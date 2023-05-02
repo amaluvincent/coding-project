@@ -35,4 +35,4 @@ plt.text(0.05, 0.9, f'Average weight(W~)= {W_mean:.2f} kg\n',
 plt.text(0.05, 0.8, f'Fraction of babies  between \n 0.9W and 1.1W (X)={n_09_11:.2%}',
          transform=plt.gca().transAxes)
 plt.savefig('histogram.png')
-
+plt.show()
