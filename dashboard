@@ -1,0 +1,81 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed May  3 13:07:14 2023
+
+@author: Amalu Vincent
+"""
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.gridspec as gridspec
+
+# Reading data from CSV file
+data = pd.read_csv('happiness_index_2018-2019.csv')
+
+# Set the font scale and colors for seaborn plots
+sns.set(font_scale=1.5, rc={'axes.facecolor':'lightgreen','figure.facecolor':'white'})
+
+# Define the grid for the subplots and giving the title
+fig = plt.figure(figsize=(20, 16), constrained_layout=True)
+fig.suptitle("HAPPINESS INDEX SCORE 2018-2019\n",fontweight='bold',fontsize=30)
+gs = fig.add_gridspec(nrows=3, ncols=3)
+
+# Add subplot 1: Distribution of Happiness Score
+ax1 = fig.add_subplot(gs[0,:])
+ax1.set_title('[0,0]')
+sns.histplot(data=data, x="Score", kde=True, color="blue")
+plt.title("Distribution of Happiness Scores",fontweight="bold")
+
+# Add subplot 2:Box plot for Year wise comparison of 2018 & 2019 data 
+ax3 = fig.add_subplot(gs[1,2])
+ax3.set_title('[0,2]')
+sns.boxplot(data=data, x="Year", y="Score", color="orange")
+plt.title("Year-wise Comparison",fontweight="bold")
+
+# Add subplot 3:Bar plot for Top 10 countries by happiness score in 2019
+ax7 = fig.add_subplot(gs[1,0:2])
+ax7.set_title('[1,0]')
+top_10_2019 = data[data["Year"] == 2019].nlargest(10, "Score")
+sns.barplot(data=top_10_2019, x="Score", y="Country or region",palette='viridis')
+plt.title("Happiness Score Of Top 10 Countries-2019",fontweight='bold')
+
+# Add subplot 4: Scatter plot for healthy life expectancy and happiness score for 2018 & 2019
+ax11 = fig.add_subplot(gs[2,0:2])
+ax11.set_title('[2,0]')
+years = [2018, 2019]
+data = data[data['Year'].isin(years)]
+sns.scatterplot(x='Score', y='Healthy life expectancy', data=data, hue='Year',
+                palette=["orange","blue"])
+plt.title('Happiness Score vs Life Expectancy (2018-2019)',fontweight="bold")
+
+# Add subplot 5:Plotting the relationship between GDP per capita and happiness score
+ax13 = fig.add_subplot(gs[2,2:4])
+ax13.set_title('[2,2]')
+sns.regplot(data=data, x="GDP per capita", y="Score", color="blue")
+plt.title("GDP per Capita vs Happiness Score",fontweight="bold")
+
+# Set the aspect ratio
+aspect_ratio = 2/1
+
+# Giving a textbox with explanation
+fig.text(1,0.4, 'This study analyses the connection between the Happiness Index\n'+  
+    'in 2018 and 2019 and a set of independent factors such as\n'+"Overall rank,"
+    "GDP per capita," "Social support," "Healthy life expectancy,\n"
+    "Freedom to make life choices," +"Generosity,"+"and Perceptions of corruption"'\n'+
+    'The purpose of this study is to look at the influence these\n'+
+    'independent factors on peoples'+'happiness levels over the course of\n'+
+    'two years.',fontweight='bold',fontsize=25)
+                  
+# Set my Name and StudentId 
+fig.text(0.8,1, "Name : Amalu.Vincent\nStudent Id : 22026244",fontweight="bold",
+         fontsize=25)
+
+# Set the dpi to 300
+plt.rcParams['savefig.dpi'] = 300
+
+# Save the figure with a high resolution
+fig.savefig("22026244.png", dpi=300, bbox_inches='tight')
+
+
